@@ -18,7 +18,7 @@ namespace Balls.Controls
         public pDraw()
         {
             InitializeComponent();
-            timer.Interval = 1;
+            timer.Interval = 5;
         }
 
         private void AddBall(object sender, MouseEventArgs e)

@@ -36,7 +36,7 @@ namespace Balls.Data
         private PointF GetRandomDirection()
         {
             Random rnd = new Random();
-            return new PointF(rnd.Next(0, 101) / 100f, rnd.Next(0, 101) / 100f);
+            return new PointF(rnd.Next(0, 500) / 100f, rnd.Next(0, 500) / 100f);
         }
 
         public void Translate()
