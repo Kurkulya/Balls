@@ -5,28 +5,42 @@ using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
-namespace Balls.Data
+namespace BallsPictures.Data
 {
-    class Ball
+    public partial class PictureBall : PictureBox
     {
-        public GraphicsPath Path { get; }
         public Size Owner { get; set; }
         public int Radius { get; }
         public PointF Direction { get; set; }
         public Color Color { get; }
         public PointF Center { get; private set; }
 
-        public Ball(PointF centr, Size owner, int rad = 10)
+        public PictureBall(PointF centr, Size owner, int rad = 10)
         {
             Radius = rad;
             Center = centr;
             Owner = owner;
-            Color = GetRandomColor();
+            Width = 2 * Radius;
+            Height = 2 * Radius;
             Direction = GetRandomDirection();
-            Path = new GraphicsPath();
-            Path.AddEllipse(centr.X - rad, centr.Y - rad, 2 * rad, 2 * rad);
+            Color = GetRandomColor();
+            Image = CreateBallImage(Radius);
         }
+
+        private Bitmap CreateBallImage(int CornerRadius)
+        {
+            Bitmap RoundedImage = new Bitmap(Width, Height);
+            using (Graphics g = Graphics.FromImage(RoundedImage))
+            {
+                g.Clear(Color.WhiteSmoke);
+                //g.SmoothingMode = SmoothingMode.AntiAlias;
+                g.FillEllipse(new SolidBrush(Color), 0, 0, Width, Height);
+                return RoundedImage;
+            }
+        }
+    
 
         private Color GetRandomColor()
         {
@@ -45,17 +59,13 @@ namespace Balls.Data
             float difX = Direction.X;
             float difY = Direction.Y;
 
-            if (Center.X <= Radius || Center.X >= Owner.Width - Radius)
+            if (Center.X <= 0 || Center.X >= Owner.Width - 2 * Radius)
                 difX = -difX;
-            if (Center.Y <= Radius || Center.Y >= Owner.Height - Radius)
+            if (Center.Y <= 0 || Center.Y >= Owner.Height - 2 * Radius)
                 difY = -difY;
 
             Direction = new PointF(difX, difY);
             Center = new PointF(Center.X + Direction.X, Center.Y + Direction.Y);
-
-            Matrix translateMatrix = new Matrix();
-            translateMatrix.Translate(Direction.X, Direction.Y);
-            Path.Transform(translateMatrix);
         }
     }
 }

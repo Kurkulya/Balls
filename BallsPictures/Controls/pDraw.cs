@@ -7,13 +7,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using Balls.Data;
+using BallsPictures.Data;
 
-namespace Balls.Controls
+namespace BallsPictures.Controls
 {
     public partial class pDraw : UserControl
     {
-        List<Ball> balls = new List<Ball>();
+        List<PictureBall> balls = new List<PictureBall>();
 
         public pDraw()
         {
@@ -26,26 +26,25 @@ namespace Balls.Controls
             if (balls.Count == 0)
                 timer.Start();
 
-            balls.Add(new Ball(e.Location, pBox.Size));
+            balls.Add(new PictureBall(e.Location, pBox.Size));
         }
 
         private void Update(object sender, EventArgs e)
         {
-            foreach (Ball ball in balls)
+            foreach (PictureBall ball in balls)
             {
-                ball.Translate();               
+                ball.Translate();
             }
             pBox.Invalidate();
         }
 
-
-        private void ReDraw(object sender, PaintEventArgs e)
+        private void OnPaint(object sender, PaintEventArgs e)
         {
-            Graphics grph = e.Graphics; 
-            foreach(Ball ball in balls)
+            Graphics grph = e.Graphics;
+            foreach (PictureBall ball in balls)
             {
-                grph.FillPath(new SolidBrush(ball.Color), ball.Path);
+                grph.DrawImage(ball.Image, ball.Center);
             }
         }
-    }
+     }
 }
