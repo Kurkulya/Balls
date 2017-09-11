@@ -34,8 +34,7 @@ namespace BallsPictures.Data
             Bitmap RoundedImage = new Bitmap(Width, Height);
             using (Graphics g = Graphics.FromImage(RoundedImage))
             {
-                g.Clear(Color.WhiteSmoke);
-                //g.SmoothingMode = SmoothingMode.AntiAlias;
+                g.SmoothingMode = SmoothingMode.AntiAlias;
                 g.FillEllipse(new SolidBrush(Color), 0, 0, Width, Height);
                 return RoundedImage;
             }
