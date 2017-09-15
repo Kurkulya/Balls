@@ -28,9 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             this.pBox = new System.Windows.Forms.PictureBox();
-            this.timer = new System.Windows.Forms.Timer(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.pBox)).BeginInit();
             this.SuspendLayout();
             // 
@@ -43,12 +41,7 @@
             this.pBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pBox.TabIndex = 0;
             this.pBox.TabStop = false;
-            this.pBox.Paint += new System.Windows.Forms.PaintEventHandler(this.OnPaint);
             this.pBox.MouseClick += new System.Windows.Forms.MouseEventHandler(this.AddBall);
-            // 
-            // timer
-            // 
-            this.timer.Tick += new System.EventHandler(this.Update);
             // 
             // pDraw
             // 
@@ -57,7 +50,6 @@
             this.Controls.Add(this.pBox);
             this.Name = "pDraw";
             this.Size = new System.Drawing.Size(448, 370);
-            this.Paint += new System.Windows.Forms.PaintEventHandler(this.OnPaint);
             this.MouseClick += new System.Windows.Forms.MouseEventHandler(this.AddBall);
             ((System.ComponentModel.ISupportInitialize)(this.pBox)).EndInit();
             this.ResumeLayout(false);
@@ -67,6 +59,5 @@
         #endregion
 
         private System.Windows.Forms.PictureBox pBox;
-        private System.Windows.Forms.Timer timer;
     }
 }

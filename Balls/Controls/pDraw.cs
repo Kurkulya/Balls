@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Balls.Data;
+using System.Drawing.Drawing2D;
 
 namespace Balls.Controls
 {
@@ -26,7 +27,8 @@ namespace Balls.Controls
             if (balls.Count == 0)
                 timer.Start();
 
-            balls.Add(new Ball(e.Location, pBox.Size));
+            if(IsPointInsideRegion(e.Location) != true)
+                balls.Add(new Ball(e.Location, pBox.Size));
         }
 
         private void Update(object sender, EventArgs e)
@@ -46,6 +48,24 @@ namespace Balls.Controls
             {
                 grph.FillPath(new SolidBrush(ball.Color), ball.Path);
             }
+        }
+
+        private bool IsPointInsideRegion(Point aim)
+        {
+            Graphics g = Graphics.FromImage(new Bitmap(100, 100));
+            GraphicsPath path;
+            Region pathRegion;
+            foreach (Ball b in balls)
+            {
+                path = b.Path;
+                pathRegion = new Region(path); 
+                if (pathRegion.IsVisible(aim, g))
+                {
+                    balls.Remove(b);
+                    return true;
+                }                
+            }
+            return false;
         }
     }
 }

@@ -13,38 +13,17 @@ namespace BallsPictures.Controls
 {
     public partial class pDraw : UserControl
     {
-        List<PictureBall> balls = new List<PictureBall>();
-
         public pDraw()
         {
             InitializeComponent();
-            timer.Interval = 1;
+
         }
 
         private void AddBall(object sender, MouseEventArgs e)
         {
-            if (balls.Count == 0)
-                timer.Start();
-
-            balls.Add(new PictureBall(e.Location, pBox.Size));
+            pBox.Controls.Add(new PictureBall(e.Location));
         }
 
-        private void Update(object sender, EventArgs e)
-        {
-            foreach (PictureBall ball in balls)
-            {
-                ball.Translate();
-            }
-            pBox.Invalidate();
-        }
-
-        private void OnPaint(object sender, PaintEventArgs e)
-        {
-            Graphics grph = e.Graphics;
-            foreach (PictureBall ball in balls)
-            {
-                grph.DrawImage(ball.Image, ball.Center);
-            }
-        }
-     }
+      
+    }
 }

@@ -17,7 +17,7 @@ namespace Balls.Data
         public Color Color { get; }
         public PointF Center { get; private set; }
 
-        public Ball(PointF centr, Size owner, int rad = 10)
+        public Ball(PointF centr, Size owner, int rad = 30)
         {
             Radius = rad;
             Center = centr;

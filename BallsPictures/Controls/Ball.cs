@@ -11,60 +11,62 @@ namespace BallsPictures.Data
 {
     public partial class PictureBall : PictureBox
     {
-        public Size Owner { get; set; }
-        public int Radius { get; }
-        public PointF Direction { get; set; }
+        public Point Direction { get; set; }
         public Color Color { get; }
-        public PointF Center { get; private set; }
 
-        public PictureBall(PointF centr, Size owner, int rad = 10)
+        Timer timer = new Timer();
+
+        public PictureBall(Point centr)
         {
-            Radius = rad;
-            Center = centr;
-            Owner = owner;
-            Width = 2 * Radius;
-            Height = 2 * Radius;
-            Direction = GetRandomDirection();
-            Color = GetRandomColor();
-            Image = CreateBallImage(Radius);
+            Random rnd = new Random();
+            
+            Location = centr;
+            Direction = new Point(rnd.Next(-10, 10), rnd.Next(-10, 10));
+            Color = Color.FromArgb(rnd.Next(256), rnd.Next(256), rnd.Next(256));
+            Image = CreateBallImage();
+            Width = 60;
+            Height = 60;
+
+            MouseClick += new MouseEventHandler(OnClick);
+
+            
+            timer.Interval = 5;
+            timer.Tick += OnTimerTick;
+            timer.Start();
         }
 
-        private Bitmap CreateBallImage(int CornerRadius)
+        private void OnTimerTick(object sender, EventArgs e)
         {
-            Bitmap RoundedImage = new Bitmap(Width, Height);
+            PictureBox parent = (PictureBox)Parent;
+
+            int difX = Direction.X;
+            int difY = Direction.Y;
+
+            if (Location.X <= 0 || Location.X >= parent.Width - 60)
+                difX = -difX;
+            if (Location.Y <= 0 || Location.Y >= parent.Height - 60)
+                difY = -difY;
+
+            Direction = new Point(difX, difY);
+            Location = new Point(Location.X + difX, Location.Y + difY);
+        }
+
+        private Bitmap CreateBallImage()
+        {
+            Bitmap RoundedImage = new Bitmap(60, 60);
             using (Graphics g = Graphics.FromImage(RoundedImage))
             {
                 g.SmoothingMode = SmoothingMode.AntiAlias;
-                g.FillEllipse(new SolidBrush(Color), 0, 0, Width, Height);
+                g.FillEllipse(new SolidBrush(Color), 0, 0, 60, 60);
                 return RoundedImage;
             }
         }
     
 
-        private Color GetRandomColor()
+        private void OnClick(object sender, MouseEventArgs e)
         {
-            Random rnd = new Random();
-            return Color.FromArgb(rnd.Next(256), rnd.Next(256), rnd.Next(256));
-        }
-
-        private PointF GetRandomDirection()
-        {
-            Random rnd = new Random();
-            return new PointF(rnd.Next(-500, 500) / 100f, rnd.Next(-500, 500) / 100f);
-        }
-
-        public void Translate()
-        {
-            float difX = Direction.X;
-            float difY = Direction.Y;
-
-            if (Center.X <= 0 || Center.X >= Owner.Width - 2 * Radius)
-                difX = -difX;
-            if (Center.Y <= 0 || Center.Y >= Owner.Height - 2 * Radius)
-                difY = -difY;
-
-            Direction = new PointF(difX, difY);
-            Center = new PointF(Center.X + Direction.X, Center.Y + Direction.Y);
+            timer.Stop();
+            Dispose();
         }
     }
 }
